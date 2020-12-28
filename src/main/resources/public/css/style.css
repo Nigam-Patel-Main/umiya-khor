@@ -1,0 +1,42 @@
+.wraper {
+	min-height: calc(100vh - 60px);
+}
+
+.form-control:focus {
+	border-color: rgba(0, 0, 0, 0.8);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 5px
+		rgba(0, 0, 0, 0.3);
+	outline: 0 none;
+}
+
+nav.navbar.navbar-expand-lg.navbar-light.bg-light {
+	-webkit-box-shadow: 0 0px 3px 0px rgba(0, 0, 0, 0.3);
+}
+
+.blog-footer {
+	padding: 0.5rem 0;
+	color: #999;
+	text-align: center;
+	background-color: #f9f9f9;
+	border-top: .05rem solid #e5e5e5;
+}
+
+form button {
+	-webkit-box-shadow: 0 0px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.btn-action {
+	-webkit-box-shadow: 0 0px 3px 0px rgba(0, 0, 0, 0.3) !important;
+	border-radius: 50%;
+}
+
+table, table a, select {
+	font-size: 80% !important;
+	white-space:nowrap;
+}
+
+.active {
+	text-decoration:underline;
+	font-weight:bold;
+	
+}
