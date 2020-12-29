@@ -30,18 +30,18 @@ $(document).ready(function(){
 	});
 	
 	// set village on edit mode
-	if($("#customerId").val()){
+	if($("#shopId").val()){
 		$("#districtId").trigger("change");
 	}
 	
 	// validation
 	// district form validation
-	$('#customerForm').formValidation({
+	$('#shopForm').formValidation({
 		framework : 'bootstrap',
 		live : 'disabled',
 		excluded : ":disabled",
 		button : {
-			selector : "#addCustomerButton",
+			selector : "#addShopButton",
 			disabled : "disabled",
 		},
 		icon : null,
@@ -49,15 +49,15 @@ $(document).ready(function(){
 			name : {
 				validators : {
 					notEmpty : {
-						message : 'The customer name is Required'
+						message : 'The shop name is Required'
 					},
 					remote : {
-						message : 'This customer name is already exist',
-						url : "/customer/check/unique/name",
+						message : 'This shop name is already exist',
+						url : "/shop/check/unique/name",
 						type : 'POST',
 						data : function() {
 							return {
-								customerId : $("#customerId").val()
+								shopId : $("#shopId").val()
 							};
 						}
 					}
@@ -96,16 +96,16 @@ $(document).ready(function(){
 	
 	//datatable
 	// district data table
-	var customerTable = $('#customerTable').DataTable({
+	var shopTable = $('#shopTable').DataTable({
 		dom : 'rtp',
 		order : []
 	});
-	$('#lengthChnageSelectBox').val(customerTable.page.len());
+	$('#lengthChnageSelectBox').val(shopTable.page.len());
 
 	$('#inputSearchField').keyup(function() {
-		customerTable.search($(this).val()).draw();
+		shopTable.search($(this).val()).draw();
 	});
 	$('#lengthChnageSelectBox').change(function() {
-		customerTable.page.len($(this).val()).draw();
+		shopTable.page.len($(this).val()).draw();
 	});
 });

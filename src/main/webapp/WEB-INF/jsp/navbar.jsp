@@ -13,15 +13,15 @@
 			<li class="nav-item active"><a class="nav-link" href="#">Selling
 
 			</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">Buying</a></li>
+			<li class="nav-item"><a class="nav-link" href="/purchase">Purchase</a></li>
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="http://example.com"
 				data-toggle="dropdown">Master</a>
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="/customer">Customer</a> <a
-						class="dropdown-item" href="#">Product</a> <a
-						class="dropdown-item" href="#">Shop</a><a class="dropdown-item"
-						href="/location">Location</a><a class="dropdown-item" href="#">Expense</a>
+						class="dropdown-item" href="/product">Product</a> <a
+						class="dropdown-item" href="/shop">Shop</a><a class="dropdown-item"
+						href="/location">Location</a><a class="dropdown-item" href="/expense">Expense</a>
 				</div></li>
 		</ul>
 		<ul class="navbar-nav ml-auto">

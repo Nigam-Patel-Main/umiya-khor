@@ -96,9 +96,9 @@
 												<a class="dropdown-item"
 													href="/location/district/update/${district.id}"> <em
 													class="fas fa-edit"></em>&nbsp;&nbsp;Update
-												</a> <a class="dropdown-item"
+												</a> <a class="dropdown-item deleteLink"
 													href="/location/district/delete/${district.id}"> <em
-													class="fas fa-trash"></em>&nbsp;&nbsp;Delete
+													class="fas fa-trash "></em>&nbsp;&nbsp;Delete
 												</a>
 											</div>
 										</div>
@@ -221,7 +221,7 @@
 												<a class="dropdown-item"
 													href="/location/village/update/${village.id}"> <em
 													class="fas fa-edit"></em>&nbsp;&nbsp;Update
-												</a> <a class="dropdown-item"
+												</a> <a class="dropdown-item deleteLink"
 													href="/location/village/delete/${village.id}"> <em
 													class="fas fa-trash"></em>&nbsp;&nbsp;Delete
 												</a>

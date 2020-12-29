@@ -17,5 +17,14 @@
 			delay : 5000
 		});
 	}
+	if("${error}")
+	{
+		$.toast({
+			title : 'Error',
+			content : "${error}",
+			type : 'error',
+			delay : 5000
+		});
+	}
 </script>
 </html>

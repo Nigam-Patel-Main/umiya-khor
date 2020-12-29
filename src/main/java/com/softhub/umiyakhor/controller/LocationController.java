@@ -107,7 +107,7 @@ public class LocationController {
 			// send message
 			redirectAttributes.addFlashAttribute("message", "District update successfully.");
 		} else {
-			redirectAttributes.addFlashAttribute("message", "District not update !!!");
+			redirectAttributes.addFlashAttribute("error", "District not update !!!");
 		}
 		return LOCATION_REDIRECT_PATH;
 	}
@@ -120,6 +120,12 @@ public class LocationController {
 		if (optional.isPresent()) {
 			DistrictVo districtVo = optional.get();
 
+			List<VillageVo> villageVos = villageRepo.findByDistrictVoId(districtVo.getId());
+			if (villageVos != null && !villageVos.isEmpty()) {
+				redirectAttributes.addFlashAttribute("error",
+						"Please delete all village of this district before this !!!");
+				return LOCATION_REDIRECT_PATH;
+			}
 			// add delete log
 			districtVo.setDeletedBy(principal.getName());
 			districtVo.setDeletedDate(new Date());
@@ -134,7 +140,7 @@ public class LocationController {
 			redirectAttributes.addFlashAttribute("message", "District delete successfully.");
 		} else {
 			// send message
-			redirectAttributes.addFlashAttribute("message", "District not deleted !!!");
+			redirectAttributes.addFlashAttribute("error", "District not deleted !!!");
 		}
 		return LOCATION_REDIRECT_PATH;
 	}
@@ -225,7 +231,7 @@ public class LocationController {
 			// send message
 			redirectAttributes.addFlashAttribute("message", "Village update successfully.");
 		} else {
-			redirectAttributes.addFlashAttribute("message", "Village not update !!!");
+			redirectAttributes.addFlashAttribute("error", "Village not update !!!");
 		}
 		return LOCATION_REDIRECT_PATH;
 	}
@@ -252,12 +258,12 @@ public class LocationController {
 			redirectAttributes.addFlashAttribute("message", "Village delete successfully.");
 		} else {
 			// send message
-			redirectAttributes.addFlashAttribute("message", "Village not deleted !!!");
+			redirectAttributes.addFlashAttribute("error", "Village not deleted !!!");
 		}
 
 		return LOCATION_REDIRECT_PATH;
 	}
-	
+
 	@PostMapping("village/check/unique/name")
 	@ResponseBody
 	public Map<String, Boolean> checkVillageNameIsUnique(@RequestParam String name, @RequestParam long villageId) {
@@ -283,4 +289,11 @@ public class LocationController {
 			return map;
 		}
 	}
+
+	@GetMapping("getVillageByDistrictId/{districtId}")
+	@ResponseBody
+	public List<VillageVo> getVillagesByDistrictId(@PathVariable long districtId) {
+		return villageRepo.findByDistrictVoId(districtId);
+	}
+
 }

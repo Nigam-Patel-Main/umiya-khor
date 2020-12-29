@@ -7,19 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import com.softhub.umiyakhor.entity.CustomerVo;
 import com.softhub.umiyakhor.entity.DistrictVo;
-import com.softhub.umiyakhor.entity.VillageVo;
 
 @Repository
-public interface VillageRepo extends CrudRepository<VillageVo, Long> {
-	
-	@Query("update VillageVo set isDeleted=1 where id=?1")
+public interface CustomerRepo extends CrudRepository<CustomerVo, Long> {
+
+	@Query("update CustomerVo set isDeleted=1 where id=?1")
 	@Modifying
 	void deleteById(long id);
 
-	List<VillageVo> findAllByOrderByCreatedDateDesc();
+	List<CustomerVo> findByName(String trim);
 
-	List<VillageVo> findByName(String trim);
-
-	List<VillageVo> findByDistrictVoId(long districtId);
+	List<CustomerVo> findAllByOrderByCreatedDateDesc();
 }

@@ -54,5 +54,8 @@ $.fn.dataTable.ext.classes.sPageButtonActive = 'active';
 
 </head>
 <body>
+	<div id="dialog" title="Confirmation Required">
+	  Are you sure about this?
+	</div>
 	<div class="wraper">
 	
