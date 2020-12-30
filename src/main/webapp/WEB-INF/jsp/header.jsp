@@ -37,6 +37,7 @@
 <script src="/js/formvalidation-bootstrap.min.js"></script>
 <script src="/js/dataTables.bootstrap4.min.js"></script>
 <script src="/js/dataTables.buttons.min.js"></script>
+<script src="/js/jquery.repeater.js"></script>
 
 <!-- Datatable Pdf files -->
 <!-- <script src="/js/jszip.min.js"></script>

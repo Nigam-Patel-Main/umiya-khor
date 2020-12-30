@@ -9,7 +9,7 @@ public class HomeController {
 	
 	@RequestMapping(value = {"","/"})
 	public String redirectToNewOrder() {
-		return "navbar";
+		return "purchase-new";
 	}
 	
 	@GetMapping("/login")

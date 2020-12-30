@@ -21,7 +21,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light {
 	border-top: .05rem solid #e5e5e5;
 }
 
-form button {
+form button ,form input[type="button"] {
 	-webkit-box-shadow: 0 0px 3px 0px rgba(0, 0, 0, 0.5);
 }
 
@@ -39,4 +39,7 @@ table, table a, select {
 	background-color:#007bff;
 	color:white;
 	
+}
+hr {
+	margin-top:0px;
 }

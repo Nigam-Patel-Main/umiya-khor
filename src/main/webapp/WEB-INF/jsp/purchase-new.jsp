@@ -6,7 +6,7 @@
 		<div class="card mb-4">
 			<div class="card-header">Purchase Form</div>
 			<div class="card-body">
-				<form method="post">
+				<form method="post" action="/purchase/add">
 					<div class="form-group has-float-label mt-3">
 						<label>Purchase Date</label> <input type="text"
 							name="orderDateString" class="form-control" id="purchaseDate"
@@ -29,7 +29,50 @@
 
 							</div>
 							<div id="collapseOne" class="collapse show">
-								<div class="card-body">Lorem ipsum..</div>
+								<div class="card-body repeater">
+									<div data-repeater-list="orderItemDTOs">
+										<div data-repeater-item>
+											<div class="d-flex-inline align-items-center">
+												<div class="d-inline-block flex fill">
+													<div class="form-group has-float-label">
+														<label>Product</label> <select class="form-control"
+															name="productId">
+															<option value="">---Select---</option>
+															<option value="">---Khor---</option>
+															<option value="">---Cattle Feed---</option>
+															<option value="">---Bhusu---</option>
+														</select>
+													</div>
+												</div>
+												<div class="d-inline-block flex fill">
+													<div class="form-group has-float-label ">
+														<label>Price</label> <input type="text" name="price"
+															class="form-control form-control-sm">
+													</div>
+												</div>
+												<div class="d-inline-block flex fill">
+													<div class="form-group has-float-label">
+														<label>Qty</label> <input type="text" name="qty"
+															class="form-control form-control-sm">
+													</div>
+												</div>
+												<div class="d-inline-block flex fill">
+													<div class="ml-2" style="margin-bottom: 1rem">
+
+														<input data-repeater-delete type="button"
+															class="btn btn-light btn-sm mb-1" value="Delete" />
+													</div>
+
+												</div>
+											</div>
+											<hr>
+
+
+										</div>
+									</div>
+									<input data-repeater-create type="button"
+										class="btn btn-light btn-sm" value="Add Product" />
+								</div>
 							</div>
 						</div>
 
@@ -43,7 +86,43 @@
 
 							</div>
 							<div id="collapseTwo" class="collapse">
-								<div class="card-body">Lorem ipsum..</div>
+								<div class="card-body repeater">
+									<div data-repeater-list="orderItemDTOs">
+										<div data-repeater-item>
+											<div class="d-flex-inline align-items-center">
+												<div class="d-inline-block flex fill">
+													<div class="form-group has-float-label">
+														<label>Expense</label> <select class="form-control"
+															name="productId">
+															<option value="">---Select---</option>
+															<option value="">---Bhadu---</option>
+															<option value="">---Tea---</option>
+														</select>
+													</div>
+												</div>
+												<div class="d-inline-block flex fill">
+													<div class="form-group has-float-label ">
+														<label>Price</label> <input type="text" name="price"
+															class="form-control form-control-sm">
+													</div>
+												</div>
+												<div class="d-inline-block flex fill">
+													<div class="ml-2" style="margin-bottom: 1rem">
+
+														<input data-repeater-delete type="button"
+															class="btn btn-light btn-sm mb-1" value="Delete" />
+													</div>
+
+												</div>
+											</div>
+											<hr>
+
+
+										</div>
+									</div>
+									<input data-repeater-create type="button"
+										class="btn btn-light btn-sm" value="Add Product" />
+								</div>
 							</div>
 						</div>
 
@@ -52,9 +131,9 @@
 								<div class="d-flex align-items-center">
 									<h7 class="mr-auto">Payment</h7>
 									<a class="collapsed card-link" data-toggle="collapse"
-									href="#collapseThree"><i class="fa fa-plus"></i> </a>
+										href="#collapseThree"><i class="fa fa-plus"></i> </a>
 								</div>
-								
+
 							</div>
 							<div id="collapseThree" class="collapse">
 								<div class="card-body">Lorem ipsum..</div>
