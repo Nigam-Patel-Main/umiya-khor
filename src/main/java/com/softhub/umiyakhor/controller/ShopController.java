@@ -2,9 +2,7 @@ package com.softhub.umiyakhor.controller;
 
 import java.security.Principal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,7 @@ public class ShopController {
 
 	@Autowired
 	ShopRepo shopRepo;
-	
+
 	@Autowired
 	DistrictRepo districtRepo;
 
@@ -46,14 +44,13 @@ public class ShopController {
 		modelAndView.addObject("shops", shopRepo.findAllByOrderByCreatedDateDesc());
 		modelAndView.addObject("districts", districtRepo.findAllByOrderByCreatedDateDesc());
 		modelAndView.addObject("villages", villageRepo.findAllByOrderByCreatedDateDesc());
-		
+
 		modelAndView.addObject("shopVo", new ShopVo());
 		return modelAndView;
 	}
 
 	@PostMapping("add")
-	public String addShop(@ModelAttribute ShopVo shopVo, RedirectAttributes redirectAttributes,
-			Principal principal) {
+	public String addShop(@ModelAttribute ShopVo shopVo, RedirectAttributes redirectAttributes, Principal principal) {
 
 		// add created log
 		shopVo.setCreatedBy(principal.getName());
@@ -77,7 +74,7 @@ public class ShopController {
 		modelAndView.addObject("shops", shopRepo.findAllByOrderByCreatedDateDesc());
 		modelAndView.addObject("districts", districtRepo.findAllByOrderByCreatedDateDesc());
 		modelAndView.addObject("villages", villageRepo.findAllByOrderByCreatedDateDesc());
-		
+
 		Optional<ShopVo> optional = shopRepo.findById(shopId);
 		if (optional.isPresent()) {
 			modelAndView.addObject("shopVo", optional.get());
@@ -86,7 +83,7 @@ public class ShopController {
 		}
 		return modelAndView;
 	}
-	
+
 	@PostMapping("update")
 	public String updateShop(@ModelAttribute ShopVo shopVo, RedirectAttributes redirectAttributes,
 			Principal principal) {
@@ -118,10 +115,9 @@ public class ShopController {
 		}
 		return SHOP_REDIRECT_PATH;
 	}
-	
+
 	@GetMapping("delete/{shopId}")
-	public String deleteShop(@PathVariable long shopId, Principal principal,
-			RedirectAttributes redirectAttributes) {
+	public String deleteShop(@PathVariable long shopId, Principal principal, RedirectAttributes redirectAttributes) {
 
 		Optional<ShopVo> optional = shopRepo.findById(shopId);
 		if (optional.isPresent()) {
@@ -145,11 +141,11 @@ public class ShopController {
 		}
 		return SHOP_REDIRECT_PATH;
 	}
-	
+
 	@PostMapping("check/unique/name")
 	@ResponseBody
-	public Map<String, Boolean> checkShopNameIsUnique(@RequestParam String name, @RequestParam long shopId) {
-		HashMap<String, Boolean> map = new HashMap<>();
+	public String checkShopNameIsUnique(@RequestParam String name, @RequestParam long shopId) {
+
 		List<ShopVo> shopVos = shopRepo.findByName(name.trim());
 		if (shopVos != null && !shopVos.isEmpty()) {
 			if (shopVos.size() == 1) {
@@ -158,17 +154,15 @@ public class ShopController {
 					if (optional.isPresent()) {
 						ShopVo shopVo = optional.get();
 						if (shopVo.getName().trim().equalsIgnoreCase(name.trim())) {
-							map.put("valid", true);
-							return map;
+
+							return "true";
 						}
 					}
 				}
 			}
-			map.put("valid", false);
-			return map;
+			return "false";
 		} else {
-			map.put("valid", true);
-			return map;
+			return "true";
 		}
 	}
 }

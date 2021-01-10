@@ -883,11 +883,17 @@ $.fn.repeater = function (fig) {
                         last(matches).replace(/\[|\]/g, '') :
                         $input.attr('name');
                         
-                    // custom   
-                    name = /[^\].]*$/.exec($input.attr('name'))[0];
-                    
                         
-
+                    // custom    
+                    var mi = $input.attr('name').indexOf("].");
+                    if(mi != -1)
+                	{
+                    	name=$input.attr('name').substring(mi+2)
+                	}else
+            		{
+                		name =$input.attr('name');
+            		}
+                    
                     var newName = groupName + '[' + index + '].' + name + '' +
                         ($input.is(':checkbox') || $input.attr('multiple') ? '[]' : '');
 
@@ -930,8 +936,8 @@ $.fn.repeater = function (fig) {
                     	
                         var key = $(this).attr('name').match(/\[([^\]]*)(\]|\]\[\])$/);
                         
-                        //custom
-                    	key = /[^\].]*$/.exec($(this).attr('name'))[0];
+                        // custom
+                        key = /[^\].]*$/.exec($(this).attr('name'))[0];
                     	
                         inputNames[key] = $(this).attr('name');
                     });

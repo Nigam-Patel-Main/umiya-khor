@@ -33,66 +33,43 @@ $(document).ready(function(){
 	if($("#customerId").val()){
 		$("#districtId").trigger("change");
 	}
-	
+		
 	// validation
-	// district form validation
-	$('#customerForm').formValidation({
-		framework : 'bootstrap',
-		live : 'disabled',
-		excluded : ":disabled",
-		button : {
-			selector : "#addCustomerButton",
-			disabled : "disabled",
-		},
-		icon : null,
-		fields : {
-			name : {
-				validators : {
-					notEmpty : {
-						message : 'The customer name is Required'
-					},
-					remote : {
-						message : 'This customer name is already exist',
-						url : "/customer/check/unique/name",
-						type : 'POST',
-						data : function() {
-							return {
-								customerId : $("#customerId").val()
-							};
-						}
-					}
-
-				}
-			},mobileNumber : {
-				validators : {
-					notEmpty : {
-						message : 'The mobile number  is Required'
-					},regexp: {
-                        regexp: /^[0]?[789]\d{9}$/,
-                        message: 'The mobile number invalid'
-					}
-				}
-			},"districtVo.id" : {
-				validators : {
-					notEmpty : {
-						message : 'The district is Required'
-					}
-				}
-			},"villageVo.id" : {
-				validators : {
-					notEmpty : {
-						message : 'The village is Required'
-					}
-				}
-			},address : {
-				validators : {
-					notEmpty : {
-						message : 'The adddress is Required'
-					}
-				}
-			}
-		}
-	});
+	$("#customerForm").validate({
+	    rules: {
+	      	name : {
+	      		required: true,
+	            remote: {
+	                 url: "/customer/check/unique/name",
+	                 type: "POST",
+	                 data: {
+	                	 customerId: function() {
+	                     return $("#customerId").val();
+	                    }
+	                 }
+	            }
+	      	},
+	      	mobileNumber:{
+	      		required:true,
+	      		regex :/^[0]?[789]\d{9}$/
+	      	},
+	      	"districtVo.id":"required",
+	      	"villageVo.id":"required",
+	      	"address":"required"
+	      	
+	      	
+	    },
+	    messages: {
+	      name: {
+	    	  remote: " Name is all ready exist"
+	      }, mobileNumber: {
+	    	  regex : "Mobile Number is invalid"
+	      }
+	    },
+	    submitHandler: function(form) {
+	      form.submit();
+	    }
+	  });
 	
 	//datatable
 	// district data table

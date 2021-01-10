@@ -28,6 +28,7 @@
 
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
 <script src="/js/toast.js"></script>
 <script src="/js/jquery.dataTables.min.js"></script>
 <script src="/js/popper.min.js"></script>
@@ -38,7 +39,7 @@
 <script src="/js/dataTables.bootstrap4.min.js"></script>
 <script src="/js/dataTables.buttons.min.js"></script>
 <script src="/js/jquery.repeater.js"></script>
-
+<script src="/js/header.js"></script>
 <!-- Datatable Pdf files -->
 <!-- <script src="/js/jszip.min.js"></script>
 <script src="/js/pdfmake.min.js"></script>
@@ -46,8 +47,7 @@
 <script src="/js/buttons.html5.min.js"></script> -->
 <script>
 //customize datatable pagination button
-$.fn.dataTable.ext.classes.sPageButton = ' btn-sm px-0 ';
-$.fn.dataTable.ext.classes.sPageButtonActive = 'active';
+
 </script>
 
 

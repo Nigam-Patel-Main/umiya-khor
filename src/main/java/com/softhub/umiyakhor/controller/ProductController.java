@@ -2,9 +2,7 @@ package com.softhub.umiyakhor.controller;
 
 import java.security.Principal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ public class ProductController {
 
 	@Autowired
 	ProductRepo productRepo;
-	
+
 	private static String PRODUCT_REDIRECT_PATH = "redirect:/product";
 
 	@GetMapping("")
@@ -72,7 +70,7 @@ public class ProductController {
 		}
 		return modelAndView;
 	}
-	
+
 	@PostMapping("update")
 	public String updateProduct(@ModelAttribute ProductVo productVo, RedirectAttributes redirectAttributes,
 			Principal principal) {
@@ -101,7 +99,7 @@ public class ProductController {
 		}
 		return PRODUCT_REDIRECT_PATH;
 	}
-	
+
 	@GetMapping("delete/{productId}")
 	public String deleteProduct(@PathVariable long productId, Principal principal,
 			RedirectAttributes redirectAttributes) {
@@ -128,11 +126,11 @@ public class ProductController {
 		}
 		return PRODUCT_REDIRECT_PATH;
 	}
-	
+
 	@PostMapping("check/unique/name")
 	@ResponseBody
-	public Map<String, Boolean> checkProductNameIsUnique(@RequestParam String name, @RequestParam long productId) {
-		HashMap<String, Boolean> map = new HashMap<>();
+	public String checkProductNameIsUnique(@RequestParam String name, @RequestParam long productId) {
+
 		List<ProductVo> productVos = productRepo.findByName(name.trim());
 		if (productVos != null && !productVos.isEmpty()) {
 			if (productVos.size() == 1) {
@@ -141,17 +139,16 @@ public class ProductController {
 					if (optional.isPresent()) {
 						ProductVo productVo = optional.get();
 						if (productVo.getName().trim().equalsIgnoreCase(name.trim())) {
-							map.put("valid", true);
-							return map;
+							return "true";
 						}
 					}
 				}
 			}
-			map.put("valid", false);
-			return map;
+
+			return "false";
 		} else {
-			map.put("valid", true);
-			return map;
+
+			return "true";
 		}
 	}
 }

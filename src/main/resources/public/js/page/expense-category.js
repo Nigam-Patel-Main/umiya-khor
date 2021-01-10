@@ -1,43 +1,28 @@
 $(document).ready(function(){
-	
-	
-	
-	
-	
-	
-	
-	// validation
-	// district form validation
-	$('#expenseForm').formValidation({
-		framework : 'bootstrap',
-		live : 'disabled',
-		excluded : ":disabled",
-		button : {
-			selector : "#addExpenseButton",
-			disabled : "disabled",
-		},
-		icon : null,
-		fields : {
-			name : {
-				validators : {
-					notEmpty : {
-						message : 'The expense name is Required'
-					},
-					remote : {
-						message : 'This expense name is already exist',
-						url : "/expense/check/unique/name",
-						type : 'POST',
-						data : function() {
-							return {
-								expenseId : $("#expenseId").val()
-							};
-						}
-					}
-
-				}
-			}
-		}
-	});
+	$("#expenseCategoryForm").validate({
+	    rules: {
+	      	name : {
+	      		required: true,
+	            remote: {
+	                 url: "/expenseCategory/check/unique/name",
+	                 type: "POST",
+	                 data: {
+	                	 expenseCategoryId: function() {
+	                     return $("#expenseCategoryId").val();
+	                    }
+	                 }
+	            }
+	      	}
+	    },
+	    messages: {
+	      name: {
+	    	  remote: "This expense category name is all ready exist"
+	      }
+	    },
+	    submitHandler: function(form) {
+	      form.submit();
+	    }
+	  });
 	
 	//datatable
 	// district data table

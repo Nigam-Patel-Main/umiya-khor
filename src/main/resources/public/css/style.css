@@ -43,3 +43,8 @@ table, table a, select {
 hr {
 	margin-top:0px;
 }
+
+label.error {
+    color:red;
+    font-size:80%;
+}

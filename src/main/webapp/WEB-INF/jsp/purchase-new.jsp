@@ -6,15 +6,19 @@
 		<div class="card mb-4">
 			<div class="card-header">Purchase Form</div>
 			<div class="card-body">
-				<form method="post" action="/purchase/add">
+				<form method="post" action="/purchase/add" id="purchaseAddForm">
 					<div class="form-group has-float-label mt-3">
 						<label>Purchase Date</label> <input type="text"
-							name="orderDateString" class="form-control" id="purchaseDate"
+							name="purchaseDate" class="form-control" id="purchaseDate"
 							autocomplete="off" style="font-size: 90%;">
 					</div>
 					<div class="form-group has-float-label">
-						<label>Shop</label> <select class="form-control" id="shopId">
+						<label>Shop</label> <select class="form-control" id="shopId"
+							name="shopVo.id">
 							<option value="">---Select---</option>
+							<c:forEach var="shop" items="${shops}">
+								<option value="${shop.id }">${shop.name}</option>
+							</c:forEach>
 						</select>
 					</div>
 					<div id="accordion" class="mb-4">
@@ -23,42 +27,47 @@
 								<div class="d-flex align-items-center">
 									<h7 class="mr-auto">Products</h7>
 									<a class="card-link" data-toggle="collapse" href="#collapseOne">
-										<i class="fa fa-plus"></i>
+										
 									</a>
 								</div>
 
 							</div>
 							<div id="collapseOne" class="collapse show">
-								<div class="card-body repeater">
-									<div data-repeater-list="orderItemDTOs">
-										<div data-repeater-item>
-											<div class="d-flex-inline align-items-center">
-												<div class="d-inline-block flex fill">
+								<div class="card-body product-repeater">
+									<div data-repeater-list="purchaseItemVos">
+										<div data-repeater-item class="productItem">
+											<div class="d-flex flex-wrap align-content-start">
+												<div class="flex fill mr-2">
 													<div class="form-group has-float-label">
 														<label>Product</label> <select class="form-control"
-															name="productId">
+															name="productVo.id">
 															<option value="">---Select---</option>
-															<option value="">---Khor---</option>
-															<option value="">---Cattle Feed---</option>
-															<option value="">---Bhusu---</option>
+															<c:forEach var="product" items="${products}">
+																<option value="${product.id }">${product.name}</option>
+															</c:forEach>
 														</select>
 													</div>
 												</div>
-												<div class="d-inline-block flex fill">
+												<div class="flex fill mr-2">
 													<div class="form-group has-float-label ">
 														<label>Price</label> <input type="text" name="price"
-															class="form-control form-control-sm">
+															class="form-control form-control-sm productPrice">
 													</div>
 												</div>
-												<div class="d-inline-block flex fill">
+												<div class="flex fill mr-2">
 													<div class="form-group has-float-label">
 														<label>Qty</label> <input type="text" name="qty"
-															class="form-control form-control-sm">
+															class="form-control form-control-sm productQty">
 													</div>
 												</div>
-												<div class="d-inline-block flex fill">
+												<div class="flex fill mr-2">
+													<div class="form-group has-float-label">
+														<label>Amount</label> <input type="text"
+															name="totalAmount" class="form-control form-control-sm productTotalAmount" readonly="readonly">
+													</div>
+												</div>
+												<div class="flex fill mr-2">
 													<div class="ml-2" style="margin-bottom: 1rem">
-
 														<input data-repeater-delete type="button"
 															class="btn btn-light btn-sm mb-1" value="Delete" />
 													</div>
@@ -70,8 +79,21 @@
 
 										</div>
 									</div>
-									<input data-repeater-create type="button"
-										class="btn btn-light btn-sm" value="Add Product" />
+									<div class="d-flex-inline align-items-center">
+										<div class="d-inline-block flex fill">
+											<p class="badge badge-light py-2">
+												Total Product Amount : <span id="productAmountLable">0.0 </span>
+											</p>
+											<input type="hidden" name="productAmount" value="0.0" id="productAmount">
+
+										</div>
+										<div class="d-inline-block flex fill mb-2">
+
+											<input data-repeater-create type="button"
+												class="btn btn-light btn-sm" value="Add Product" />
+										</div>
+									</div>
+
 								</div>
 							</div>
 						</div>
@@ -83,32 +105,38 @@
 									<a class="collapsed card-link" data-toggle="collapse"
 										href="#collapseTwo"><i class="fa fa-plus"></i> </a>
 								</div>
-
 							</div>
 							<div id="collapseTwo" class="collapse">
-								<div class="card-body repeater">
-									<div data-repeater-list="orderItemDTOs">
-										<div data-repeater-item>
+								<div class="card-body expense-repeater">
+									<div data-repeater-list="expenseItemVos">
+										<div data-repeater-item class="expenseItem">
 											<div class="d-flex-inline align-items-center">
 												<div class="d-inline-block flex fill">
 													<div class="form-group has-float-label">
-														<label>Expense</label> <select class="form-control"
-															name="productId">
+														<label>Expense Category</label> <select
+															class="form-control" name="expenseCategoryVo.id">
 															<option value="">---Select---</option>
-															<option value="">---Bhadu---</option>
-															<option value="">---Tea---</option>
+															<c:forEach var="expenseCategory"
+																items="${expenseCategories}">
+																<option value="${expenseCategory.id }">${expenseCategory.name}</option>
+															</c:forEach>
 														</select>
 													</div>
 												</div>
 												<div class="d-inline-block flex fill">
 													<div class="form-group has-float-label ">
+														<label>Description</label> <input type="text"
+															name="discription" class="form-control form-control-sm">
+													</div>
+												</div>
+												<div class="d-inline-block flex fill">
+													<div class="form-group has-float-label ">
 														<label>Price</label> <input type="text" name="price"
-															class="form-control form-control-sm">
+															class="form-control form-control-sm expensePrice">
 													</div>
 												</div>
 												<div class="d-inline-block flex fill">
 													<div class="ml-2" style="margin-bottom: 1rem">
-
 														<input data-repeater-delete type="button"
 															class="btn btn-light btn-sm mb-1" value="Delete" />
 													</div>
@@ -120,29 +148,32 @@
 
 										</div>
 									</div>
-									<input data-repeater-create type="button"
-										class="btn btn-light btn-sm" value="Add Product" />
+
+									<div class="d-flex-inline align-items-center">
+										<div class="d-inline-block flex fill">
+											<p class="badge badge-light py-2">
+												Total Expense Amount : <span id="expenseAmountLable">0.0 </span>
+											</p>
+											<input type="hidden" name="expenseAmount" value="0.0" id="expenseAmount">
+
+										</div>
+										<div class="d-inline-block flex fill mb-2">
+											<input data-repeater-create type="button"
+												class="btn btn-light btn-sm" value="Add Expense" />
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-
-						<div class="card mb-3">
-							<div class="card-header py-2">
-								<div class="d-flex align-items-center">
-									<h7 class="mr-auto">Payment</h7>
-									<a class="collapsed card-link" data-toggle="collapse"
-										href="#collapseThree"><i class="fa fa-plus"></i> </a>
-								</div>
-
-							</div>
-							<div id="collapseThree" class="collapse">
-								<div class="card-body">Lorem ipsum..</div>
-							</div>
-						</div>
-
 					</div>
-					<button type="submit" class="btn btn-light btn-sm">
-						Purchase</button>
+					<div>
+						<p class="badge badge-light py-2">
+							Total Amount : <span id="totalAmountLable">0.0 </span>
+						</p>
+						<input type="hidden" name="totalAmount" value="0.0" id="totalAmount">
+					</div>
+					<button type="submit" class="btn btn-primary btn-sm px-5" id="purchaseAddFormSubmitButton">
+						Submit</button>
 				</form>
 			</div>
 		</div>
@@ -202,6 +233,6 @@
 		</div>
 	</div>
 </div>
-
-<script src="/js/page/purchase.js"></script>
+<script src="/js/page/purchase-new-validation.js"></script>
+<script src="/js/page/purchase-new.js"></script>
 <%@  include file="footer.jsp"%>

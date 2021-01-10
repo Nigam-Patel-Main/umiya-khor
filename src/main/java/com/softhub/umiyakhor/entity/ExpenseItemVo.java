@@ -15,11 +15,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "purchase_item")
+@Table(name = "expense_item")
 @Getter
 @Setter
 @Where(clause = "is_deleted=0")
-public class PurchaseItemVo extends CommonVo {
+public class ExpenseItemVo extends CommonVo {
 
 	@Id
 	@Column(name = "id")
@@ -27,17 +27,14 @@ public class PurchaseItemVo extends CommonVo {
 	private long id;
 
 	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private ProductVo productVo;
+	@JoinColumn(name = "expense_category_id")
+	private ExpenseCategoryVo expenseCategoryVo;
 
-	@Column(name = "qty")
-	private Double qty;
+	@Column(name = "description")
+	private String description;
 
 	@Column(name = "price")
 	private Double price;
-
-	@Column(name = "total_amount")
-	private Double totalAmount;
 
 	@ManyToOne
 	@JoinColumn(name = "purchase_id")

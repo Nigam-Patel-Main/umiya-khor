@@ -21,7 +21,7 @@
 					<a class="dropdown-item" href="/customer">Customer</a> <a
 						class="dropdown-item" href="/product">Product</a> <a
 						class="dropdown-item" href="/shop">Shop</a><a class="dropdown-item"
-						href="/location">Location</a><a class="dropdown-item" href="/expense">Expense</a>
+						href="/location">Location</a><a class="dropdown-item" href="/expenseCategory">Expense</a>
 				</div></li>
 		</ul>
 		<ul class="navbar-nav ml-auto">

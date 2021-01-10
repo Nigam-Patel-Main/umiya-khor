@@ -1,47 +1,35 @@
 $(document).ready(function(){
 	
-	// validation
-	// district form validation
-	$('#productForm').formValidation({
-		framework : 'bootstrap',
-		live : 'disabled',
-		excluded : ":disabled",
-		button : {
-			selector : "#addProductButton",
-			disabled : "disabled",
-		},
-		icon : null,
-		fields : {
-			name : {
-				validators : {
-					notEmpty : {
-						message : 'The product name is Required'
-					},
-					remote : {
-						message : 'This product name is already exist',
-						url : "/product/check/unique/name",
-						type : 'POST',
-						data : function() {
-							return {
-								productId : $("#productId").val()
-							};
-						}
-					}
-
-				}
-			},price : {
-				validators : {
-					notEmpty : {
-						message : 'The price is Required'
-					},
-                    regexp: {
-                        regexp: /^[0-9]\d*(\.\d+)?$/,
-                        message: 'The price can only consist of number'
-                    }
-				}
-			}
-		}
-	});
+	$("#productForm").validate({
+	    rules: {
+	      	name : {
+	      		required: true,
+	            remote: {
+	                 url: "/product/check/unique/name",
+	                 type: "POST",
+	                 data: {
+	                	 productId: function() {
+	                     return $("#productId").val();
+	                    }
+	                 }
+	            }
+	      	},
+	      	price:{
+	      		required:true,
+	      		regex :/^[0-9]\d*(\.\d+)?$/
+	      	}
+	    },
+	    messages: {
+	      name: {
+	    	  remote: "Product Name is all ready exist"
+	      }, price: {
+	    	  regex : "Price is invalid"
+	      }
+	    },
+	    submitHandler: function(form) {
+	      form.submit();
+	    }
+	  });
 	
 	//datatable
 	// district data table

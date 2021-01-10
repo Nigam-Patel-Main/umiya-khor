@@ -2,9 +2,7 @@ package com.softhub.umiyakhor.controller;
 
 import java.security.Principal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +21,6 @@ import com.softhub.umiyakhor.entity.DistrictVo;
 import com.softhub.umiyakhor.entity.VillageVo;
 import com.softhub.umiyakhor.repository.DistrictRepo;
 import com.softhub.umiyakhor.repository.VillageRepo;
-
-import javassist.expr.NewArray;
 
 @Controller
 @RequestMapping("location")
@@ -147,8 +143,7 @@ public class LocationController {
 
 	@PostMapping("district/check/unique/name")
 	@ResponseBody
-	public Map<String, Boolean> checkDistrictNameIsUnique(@RequestParam String name, @RequestParam long districtId) {
-		HashMap<String, Boolean> map = new HashMap<>();
+	public String checkDistrictNameIsUnique(@RequestParam String name, @RequestParam long districtId) {
 		List<DistrictVo> districtVos = districtRepo.findByName(name.trim());
 		if (districtVos != null && !districtVos.isEmpty()) {
 			if (districtVos.size() == 1) {
@@ -157,17 +152,14 @@ public class LocationController {
 					if (optional.isPresent()) {
 						DistrictVo districtVo = optional.get();
 						if (districtVo.getName().trim().equalsIgnoreCase(name.trim())) {
-							map.put("valid", true);
-							return map;
+							return "true";
 						}
 					}
 				}
 			}
-			map.put("valid", false);
-			return map;
+			return "false";
 		} else {
-			map.put("valid", true);
-			return map;
+			return "true";
 		}
 	}
 
@@ -266,8 +258,7 @@ public class LocationController {
 
 	@PostMapping("village/check/unique/name")
 	@ResponseBody
-	public Map<String, Boolean> checkVillageNameIsUnique(@RequestParam String name, @RequestParam long villageId) {
-		HashMap<String, Boolean> map = new HashMap<>();
+	public String checkVillageNameIsUnique(@RequestParam String name, @RequestParam long villageId) {
 		List<VillageVo> villageVos = villageRepo.findByName(name.trim());
 		if (villageVos != null && !villageVos.isEmpty()) {
 			if (villageVos.size() == 1) {
@@ -276,17 +267,15 @@ public class LocationController {
 					if (optional.isPresent()) {
 						VillageVo villageVo = optional.get();
 						if (villageVo.getName().trim().equalsIgnoreCase(name.trim())) {
-							map.put("valid", true);
-							return map;
+							return "true";
 						}
 					}
 				}
 			}
-			map.put("valid", false);
-			return map;
+			return "false";
 		} else {
-			map.put("valid", true);
-			return map;
+
+			return "true";
 		}
 	}
 

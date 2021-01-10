@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,18 +32,22 @@ public class PurchaseVo extends CommonVo {
 	private long id;
 
 	@Column(name = "purchase_date")
+	@DateTimeFormat(pattern = "dd/mm/yyyy")
 	private Date purchaseDate;
 
 	@ManyToOne
 	@JoinColumn(name = "shop_id")
 	private ShopVo shopVo;
 
-	private Double purchaseAmount;
+	private Double productAmount;
 	private Double expenseAmount;
-	private Double paymentAmount;
 
 	private Double totalAmaount;
 
 	@OneToMany(mappedBy = "purchaseVo")
 	private List<PurchaseItemVo> purchaseItemVos;
+
+	@OneToMany(mappedBy = "purchaseVo")
+	private List<ExpenseItemVo> expenseItemVos;
+
 }

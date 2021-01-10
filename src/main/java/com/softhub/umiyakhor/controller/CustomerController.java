@@ -2,9 +2,7 @@ package com.softhub.umiyakhor.controller;
 
 import java.security.Principal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,7 @@ public class CustomerController {
 
 	@Autowired
 	CustomerRepo customerRepo;
-	
+
 	@Autowired
 	DistrictRepo districtRepo;
 
@@ -46,7 +44,7 @@ public class CustomerController {
 		modelAndView.addObject("customers", customerRepo.findAllByOrderByCreatedDateDesc());
 		modelAndView.addObject("districts", districtRepo.findAllByOrderByCreatedDateDesc());
 		modelAndView.addObject("villages", villageRepo.findAllByOrderByCreatedDateDesc());
-		
+
 		modelAndView.addObject("customerVo", new CustomerVo());
 		return modelAndView;
 	}
@@ -77,7 +75,7 @@ public class CustomerController {
 		modelAndView.addObject("customers", customerRepo.findAllByOrderByCreatedDateDesc());
 		modelAndView.addObject("districts", districtRepo.findAllByOrderByCreatedDateDesc());
 		modelAndView.addObject("villages", villageRepo.findAllByOrderByCreatedDateDesc());
-		
+
 		Optional<CustomerVo> optional = customerRepo.findById(customerId);
 		if (optional.isPresent()) {
 			modelAndView.addObject("customerVo", optional.get());
@@ -86,7 +84,7 @@ public class CustomerController {
 		}
 		return modelAndView;
 	}
-	
+
 	@PostMapping("update")
 	public String updateCustomer(@ModelAttribute CustomerVo customerVo, RedirectAttributes redirectAttributes,
 			Principal principal) {
@@ -118,7 +116,7 @@ public class CustomerController {
 		}
 		return CUSTOMER_REDIRECT_PATH;
 	}
-	
+
 	@GetMapping("delete/{customerId}")
 	public String deleteCustomer(@PathVariable long customerId, Principal principal,
 			RedirectAttributes redirectAttributes) {
@@ -145,11 +143,11 @@ public class CustomerController {
 		}
 		return CUSTOMER_REDIRECT_PATH;
 	}
-	
+
 	@PostMapping("check/unique/name")
 	@ResponseBody
-	public Map<String, Boolean> checkCustomerNameIsUnique(@RequestParam String name, @RequestParam long customerId) {
-		HashMap<String, Boolean> map = new HashMap<>();
+	public String checkCustomerNameIsUnique(@RequestParam String name, @RequestParam long customerId) {
+
 		List<CustomerVo> customerVos = customerRepo.findByName(name.trim());
 		if (customerVos != null && !customerVos.isEmpty()) {
 			if (customerVos.size() == 1) {
@@ -158,17 +156,15 @@ public class CustomerController {
 					if (optional.isPresent()) {
 						CustomerVo customerVo = optional.get();
 						if (customerVo.getName().trim().equalsIgnoreCase(name.trim())) {
-							map.put("valid", true);
-							return map;
+							return "true";
 						}
 					}
 				}
 			}
-			map.put("valid", false);
-			return map;
+			return "false";
 		} else {
-			map.put("valid", true);
-			return map;
+
+			return "true";
 		}
 	}
 }

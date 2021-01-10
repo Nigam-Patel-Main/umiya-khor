@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
@@ -15,11 +13,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "expense")
+@Table(name = "expense_category")
 @Getter
 @Setter
 @Where(clause = "is_deleted=0")
-public class ExpenseVo extends CommonVo {
+public class ExpenseCategoryVo extends CommonVo {
 
 	@Id
 	@Column(name = "id")
@@ -29,5 +27,4 @@ public class ExpenseVo extends CommonVo {
 	@Column(name = "name")
 	public String name;
 
-	
 }

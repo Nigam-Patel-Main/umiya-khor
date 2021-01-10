@@ -2,9 +2,7 @@ package com.softhub.umiyakhor.controller;
 
 import java.security.Principal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,142 +17,135 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.softhub.umiyakhor.entity.ExpenseVo;
-import com.softhub.umiyakhor.repository.DistrictRepo;
-import com.softhub.umiyakhor.repository.ExpenseRepo;
-import com.softhub.umiyakhor.repository.VillageRepo;
+import com.softhub.umiyakhor.entity.ExpenseCategoryVo;
+import com.softhub.umiyakhor.repository.ExpenseCategoryRepo;
 
 @Controller
-@RequestMapping("expense")
-public class ExpenseController {
+@RequestMapping("expenseCategory")
+public class ExpenseCategoryController {
 
 	@Autowired
-	ExpenseRepo expenseRepo;
-	
+	ExpenseCategoryRepo expenseCategoryRepo;
 
-
-	private static String EXPENSE_REDIRECT_PATH = "redirect:/expense";
+	private static String EXPENSE_REDIRECT_PATH = "redirect:/expenseCategory";
 
 	@GetMapping("")
-	public ModelAndView showExpensePage() {
+	public ModelAndView showExpenseCategoryPage() {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("expense");
-		modelAndView.addObject("expenses", expenseRepo.findAllByOrderByCreatedDateDesc());
-		modelAndView.addObject("expenseVo", new ExpenseVo());
+		modelAndView.setViewName("expense-category");
+		modelAndView.addObject("expenseCategorys", expenseCategoryRepo.findAllByOrderByCreatedDateDesc());
+		modelAndView.addObject("expenseCategoryVo", new ExpenseCategoryVo());
 		return modelAndView;
 	}
 
 	@PostMapping("add")
-	public String addExpense(@ModelAttribute ExpenseVo expenseVo, RedirectAttributes redirectAttributes,
-			Principal principal) {
+	public String addExpenseCategory(@ModelAttribute ExpenseCategoryVo expenseCategoryVo,
+			RedirectAttributes redirectAttributes, Principal principal) {
 
 		// add created log
-		expenseVo.setCreatedBy(principal.getName());
-		expenseVo.setCreatedDate(new Date());
-		expenseVo.setUpdatedBy(principal.getName());
-		expenseVo.setUpdatedDate(new Date());
+		expenseCategoryVo.setCreatedBy(principal.getName());
+		expenseCategoryVo.setCreatedDate(new Date());
+		expenseCategoryVo.setUpdatedBy(principal.getName());
+		expenseCategoryVo.setUpdatedDate(new Date());
 
-		// save expenseVo
-		expenseRepo.save(expenseVo);
+		// save expenseCategoryVo
+		expenseCategoryRepo.save(expenseCategoryVo);
 
 		// send message
-		redirectAttributes.addFlashAttribute("message", "Expense inserted successfully.");
+		redirectAttributes.addFlashAttribute("message", "Expense Category inserted successfully.");
 
 		return EXPENSE_REDIRECT_PATH;
 	}
 
-	@GetMapping("update/{expenseId}")
-	public ModelAndView updateExpense(@PathVariable long expenseId) {
+	@GetMapping("update/{expenseCategoryId}")
+	public ModelAndView updateExpenseCategory(@PathVariable long expenseCategoryId) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("expense");
-		modelAndView.addObject("expenses", expenseRepo.findAllByOrderByCreatedDateDesc());
-		Optional<ExpenseVo> optional = expenseRepo.findById(expenseId);
+		modelAndView.setViewName("expense-category");
+		modelAndView.addObject("expenseCategorys", expenseCategoryRepo.findAllByOrderByCreatedDateDesc());
+		Optional<ExpenseCategoryVo> optional = expenseCategoryRepo.findById(expenseCategoryId);
 		if (optional.isPresent()) {
-			modelAndView.addObject("expenseVo", optional.get());
+			modelAndView.addObject("expenseCategoryVo", optional.get());
 		} else {
-			modelAndView.addObject("expenseVo", new ExpenseVo());
+			modelAndView.addObject("expenseCategoryVo", new ExpenseCategoryVo());
 		}
 		return modelAndView;
 	}
-	
-	@PostMapping("update")
-	public String updateExpense(@ModelAttribute ExpenseVo expenseVo, RedirectAttributes redirectAttributes,
-			Principal principal) {
 
-		Optional<ExpenseVo> optional = expenseRepo.findById(expenseVo.getId());
+	@PostMapping("update")
+	public String updateExpenseCategory(@ModelAttribute ExpenseCategoryVo expenseCategoryVo,
+			RedirectAttributes redirectAttributes, Principal principal) {
+
+		Optional<ExpenseCategoryVo> optional = expenseCategoryRepo.findById(expenseCategoryVo.getId());
 		if (optional.isPresent()) {
 
 			// get object from optional
-			ExpenseVo dbExpenseVo = optional.get();
+			ExpenseCategoryVo dbExpenseCategoryVo = optional.get();
 
 			// add updated log
-			dbExpenseVo.setUpdatedBy(principal.getName());
-			dbExpenseVo.setUpdatedDate(new Date());
+			dbExpenseCategoryVo.setUpdatedBy(principal.getName());
+			dbExpenseCategoryVo.setUpdatedDate(new Date());
 
 			// set change field
-			dbExpenseVo.setName(expenseVo.getName());
+			dbExpenseCategoryVo.setName(expenseCategoryVo.getName());
 
-			// update expenseVo
-			expenseRepo.save(dbExpenseVo);
+			// update expenseCategoryVo
+			expenseCategoryRepo.save(dbExpenseCategoryVo);
 
 			// send message
-			redirectAttributes.addFlashAttribute("message", "Expense update successfully.");
+			redirectAttributes.addFlashAttribute("message", "Expense Category update successfully.");
 		} else {
-			redirectAttributes.addFlashAttribute("error", "Expense not update !!!");
+			redirectAttributes.addFlashAttribute("error", "Expense Category not update !!!");
 		}
 		return EXPENSE_REDIRECT_PATH;
 	}
-	
-	@GetMapping("delete/{expenseId}")
-	public String deleteExpense(@PathVariable long expenseId, Principal principal,
+
+	@GetMapping("delete/{expenseCategoryId}")
+	public String deleteExpenseCategory(@PathVariable long expenseCategoryId, Principal principal,
 			RedirectAttributes redirectAttributes) {
 
-		Optional<ExpenseVo> optional = expenseRepo.findById(expenseId);
+		Optional<ExpenseCategoryVo> optional = expenseCategoryRepo.findById(expenseCategoryId);
 		if (optional.isPresent()) {
-			ExpenseVo expenseVo = optional.get();
+			ExpenseCategoryVo expenseCategoryVo = optional.get();
 
 			// add delete log
-			expenseVo.setDeletedBy(principal.getName());
-			expenseVo.setDeletedDate(new Date());
+			expenseCategoryVo.setDeletedBy(principal.getName());
+			expenseCategoryVo.setDeletedDate(new Date());
 
 			// update before delete
-			expenseRepo.save(expenseVo);
+			expenseCategoryRepo.save(expenseCategoryVo);
 
 			// finally delete distroctVo
-			expenseRepo.deleteById(expenseVo.getId());
+			expenseCategoryRepo.deleteById(expenseCategoryVo.getId());
 
 			// send message
-			redirectAttributes.addFlashAttribute("message", "Expense delete successfully.");
+			redirectAttributes.addFlashAttribute("message", "Expense Category delete successfully.");
 		} else {
 			// send message
-			redirectAttributes.addFlashAttribute("error", "Expense not deleted !!!");
+			redirectAttributes.addFlashAttribute("error", "Expense Category not deleted !!!");
 		}
 		return EXPENSE_REDIRECT_PATH;
 	}
-	
+
 	@PostMapping("check/unique/name")
 	@ResponseBody
-	public Map<String, Boolean> checkExpenseNameIsUnique(@RequestParam String name, @RequestParam long expenseId) {
-		HashMap<String, Boolean> map = new HashMap<>();
-		List<ExpenseVo> expenseVos = expenseRepo.findByName(name.trim());
-		if (expenseVos != null && !expenseVos.isEmpty()) {
-			if (expenseVos.size() == 1) {
-				if (expenseId != 0) {
-					Optional<ExpenseVo> optional = expenseRepo.findById(expenseId);
+	public String checkExpenseCategoryNameIsUnique(@RequestParam String name, @RequestParam long expenseCategoryId) {
+
+		List<ExpenseCategoryVo> expenseCategoryVos = expenseCategoryRepo.findByName(name.trim());
+		if (expenseCategoryVos != null && !expenseCategoryVos.isEmpty()) {
+			if (expenseCategoryVos.size() == 1) {
+				if (expenseCategoryId != 0) {
+					Optional<ExpenseCategoryVo> optional = expenseCategoryRepo.findById(expenseCategoryId);
 					if (optional.isPresent()) {
-						ExpenseVo expenseVo = optional.get();
-						if (expenseVo.getName().trim().equalsIgnoreCase(name.trim())) {
-							map.put("valid", true);
-							return map;
+						ExpenseCategoryVo expenseCategoryVo = optional.get();
+						if (expenseCategoryVo.getName().trim().equalsIgnoreCase(name.trim())) {
+							return "true";
 						}
 					}
 				}
 			}
-			map.put("valid", false);
-			return map;
+			return "false";
 		} else {
-			map.put("valid", true);
-			return map;
+			return "true";
 		}
 	}
 }
