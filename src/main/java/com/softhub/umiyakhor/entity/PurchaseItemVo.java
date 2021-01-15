@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Where;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,8 +18,7 @@ import lombok.Setter;
 @Table(name = "purchase_item")
 @Getter
 @Setter
-@Where(clause = "is_deleted=0")
-public class PurchaseItemVo extends CommonVo {
+public class PurchaseItemVo {
 
 	@Id
 	@Column(name = "id")
@@ -39,6 +38,7 @@ public class PurchaseItemVo extends CommonVo {
 	@Column(name = "total_amount")
 	private Double totalAmount;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "purchase_id")
 	private PurchaseVo purchaseVo;

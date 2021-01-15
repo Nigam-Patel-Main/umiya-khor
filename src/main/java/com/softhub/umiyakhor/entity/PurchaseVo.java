@@ -3,6 +3,7 @@ package com.softhub.umiyakhor.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,12 +43,12 @@ public class PurchaseVo extends CommonVo {
 	private Double productAmount;
 	private Double expenseAmount;
 
-	private Double totalAmaount;
+	private Double totalAmount;
 
-	@OneToMany(mappedBy = "purchaseVo")
+	@OneToMany(mappedBy = "purchaseVo", cascade = CascadeType.ALL)
 	private List<PurchaseItemVo> purchaseItemVos;
 
-	@OneToMany(mappedBy = "purchaseVo")
+	@OneToMany(mappedBy = "purchaseVo", cascade = CascadeType.ALL)
 	private List<ExpenseItemVo> expenseItemVos;
 
 }

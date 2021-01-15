@@ -31,15 +31,15 @@ public class CustomerVo extends CommonVo {
 
 	@Column(name = "mobile_number")
 	public String mobileNumber;
-	
+
 	@OneToOne
 	@JoinColumn(name = "district_id")
 	public DistrictVo districtVo;
-	
+
 	@OneToOne
 	@JoinColumn(name = "village_id")
 	public VillageVo villageVo;
-	
+
 	@Column(name = "address")
 	public String address;
 }

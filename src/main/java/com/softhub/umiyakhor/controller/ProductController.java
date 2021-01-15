@@ -151,4 +151,15 @@ public class ProductController {
 			return "true";
 		}
 	}
+
+	@ResponseBody
+	@GetMapping("price/{productId}")
+	private Double getProductPriceById(@PathVariable("productId") Long productId) {
+		Optional<ProductVo> optional = productRepo.findById(productId);
+		if (optional.isPresent()) {
+			ProductVo productVo = optional.get();
+			return productVo.getPrice();
+		}
+		return 0.0;
+	}
 }

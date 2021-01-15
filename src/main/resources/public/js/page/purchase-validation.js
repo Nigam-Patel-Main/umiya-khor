@@ -9,3 +9,6 @@
 		  required:true,
 		  regex :/^[0-9]\d*(\.\d+)?$/
   };
+  const descriptionValidation = {
+		  required:true
+  };

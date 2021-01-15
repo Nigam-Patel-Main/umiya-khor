@@ -1,7 +1,23 @@
 $(document).ready(
     function() {
-        var today = moment(new Date()).format('DD/MM/YYYY')
+    	
+    	/* datatable initialization */
 
+    	var purchaseTable = $('#purchaseTable').DataTable({
+    		dom : 'rtp',
+    		order : []
+    	});
+    	$('#length_change').val(purchaseTable.page.len());
+
+    	$('#inputSearchField').keyup(function() {
+    		purchaseTable.search($(this).val()).draw();
+    	});
+    	$('#lengthChnageSelectBox').change(function() {
+    		purchaseTable.page.len($(this).val()).draw();
+    	});
+    	
+    	/*date picker for purchase date*/
+    	var today = moment(new Date()).format('DD/MM/YYYY')
         $("#purchaseDate").datepicker({
             yearRange: "2002:2012",
             dateFormat: 'dd/mm/yy',
@@ -27,6 +43,7 @@ $(document).ready(
             }).on(
             'hide.bs.collapse',
             function() {
+            	removeAllExpenseRepeater();
                 $(this).prev(".card-header").find(".fa").removeClass(
                     "fa-trash").addClass("fa-plus");
             });
@@ -53,10 +70,12 @@ $(document).ready(
         $('.expense-repeater').repeater({
             initEmpty: true,
             show: function() {
+            	addExpenseValidation($(this).index());
                 updateAllTotalAmount();
                 $(this).slideDown();
             },
             hide: function(deleteElement) {
+            	removeExpenseValidation($(this).index())
                 $(this).slideUp(deleteElement);
                 setTimeout(function() {
                     updateAllTotalAmount();
@@ -106,21 +125,115 @@ $(document).ready(
             }
         });
 
-        // add validation for allready exis one repeater item product
+        /*add validation for allready exis one product repeater item*/ 
         addProductValidation(0);
+        
+        /*get price of product on change of select box*/
+        $(document).on("change",".productSelectBox",function(){
+        	var productId = $(this).val();
+        	if(productId){
+        		var that =this;
+        		$.get("/product/price/"+productId,function(price){
+        			$(that).closest("div[data-repeater-item]").find(".productPrice").val(price);
+        		})
+        	}else{
+        		$(this).closest("div[data-repeater-item]").find(".productPrice").val(0.00);
+    		}
+        });
+        
     });
 
+/*view all purchase order detail*/
+function onView(purchaseId){
+	
+	if(purchaseId){
+		$.get("/purchase/"+purchaseId,function(order){
+			$("#POMOrderNumber").html(order.id);
+			$("#POMOrderDate").html(moment(order.purchaseDate).format("DD/MM/YYYY"));
+			$("#POMShopName").html(order.shopVo.name);
+			
+			/*prepare product body for view in table */
+			var productTableBody="";
+			if(order.purchaseItemVos){
+				for(var purchaseItem of order.purchaseItemVos) {
+					productTableBody+="<tr>";
+					productTableBody+="<td>"+purchaseItem?.productVo.name+"</td>";
+					productTableBody+="<td>"+purchaseItem?.qty+"</td>";
+					productTableBody+="<td>"+purchaseItem?.price+"</td>";
+					productTableBody+="<td>"+purchaseItem?.totalAmount+"</td>";
+					productTableBody+="</tr>";
+				}
+			}
+			$("#POMProducts").html(productTableBody);
+			
+			/*prepare expense body for view in table */
+			var expenseTableBody="";
+			if(order.purchaseItemVos){
+				for(var expenseItem of order.expenseItemVos) {
+					expenseTableBody+="<tr>";
+					expenseTableBody+="<td>"+expenseItem?.expenseCategoryVo.name+"</td>";
+					expenseTableBody+="<td>"+expenseItem?.description+"</td>";
+					expenseTableBody+="<td>"+expenseItem?.price+"</td>";
+					expenseTableBody+="</tr>";
+				}
+			}
+			if(!expenseTableBody){
+				expenseTableBody+="<tr class='text-center'> <td colspan='3'>Expenses Not Available</td></tr>";
+			}
+			$("#POMExpenses").html(expenseTableBody);
+			
+			/* set final amount */
+			$("#POMProductAmount").html(order.productAmount);
+			$("#POMExpenseAmount").html(order.expenseAmount);
+			$("#POMTotalAmount").html(order.totalAmount);
+			
+			/*set log for this order*/
+			$("#POMCreatedDate").html(moment(order.createdDate).format("DD/MM/YYYY hh:mm"));
+			$("#POMCreatedBy").html(order.createdBy);
+			$("#POMUpdatedDate").html(moment(order.updatedDate).format("DD/MM/YYYY hh:mm"));
+			$("#POMUpdatedBy").html(order.updatedBy);
+			
+			
+			$("#purchaseOrderModal").modal("show");	
+		})
+	}
+	
+}
+/*add product repeater validation dynamically*/
 function addProductValidation(index){
 	$("select[name='purchaseItemVos["+index+"].productVo.id']").rules('add',idValidation);
 	$("input[name='purchaseItemVos["+index+"].price']").rules('add',priceValidation);
 	$("input[name='purchaseItemVos["+index+"].qty']").rules('add',qtyValidation);
 }
+/*remove product repeater validation dynamically*/
 function removeProductValidation(index){
 	$("select[name='purchaseItemVos["+index+"].productVo.id']").rules('remove');
 	$("input[name='purchaseItemVos["+index+"].price']").rules('remove');
 	$("input[name='purchaseItemVos["+index+"].qty']").rules('remove');
 }
 
+/*add expense repeater validation dynamically*/
+function addExpenseValidation(index){
+	$("select[name='expenseItemVos["+index+"].expenseCategoryVo.id']").rules('add',idValidation);
+	$("input[name='purchaseItemVos["+index+"].discription']").rules('add',descriptionValidation);
+	$("input[name='purchaseItemVos["+index+"].price']").rules('add',priceValidation);
+}
+
+/*remove expense repeater validation dynamically*/
+function removeExpenseValidation(index){
+	$("select[name='purchaseItemVos["+index+"].expenseCategoryVo.id']").rules('remove');
+	$("input[name='purchaseItemVos["+index+"].discription']").rules('remove');
+	$("input[name='purchaseItemVos["+index+"].price']").rules('remove');
+}
+
+/*cleare all expense repeater on hide button*/
+function removeAllExpenseRepeater(){
+	$(".expenseItem").each(function(index) {
+        $(this).find("input[data-repeater-delete]").trigger("click");
+    });
+}
+
+/* update all product,expense and frand total function*/
 function updateAllTotalAmount() {
     var productAmount = 0.0;
     var expenseAmount = 0.0;
@@ -160,7 +273,7 @@ function updateAllTotalAmount() {
 
 
     // update grand total amount
-    grantTotalAmount = expenseAmount + productAmount;
+    grantTotalAmount = Number(expenseAmount) + Number(productAmount);
     $("#totalAmount").val(Number(grantTotalAmount).toFixed(2)).trigger("change");
 
 }
