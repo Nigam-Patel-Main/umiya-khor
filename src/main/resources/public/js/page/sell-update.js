@@ -1,16 +1,16 @@
 $(document).ready(
     function() {
     	/*product form validation*/
-    	$("#purchaseAddForm").validate({
+    	$("#sellAddForm").validate({
             rules: {
-                "purchaseDate": {
+                "sellDate": {
                     required: true,
                     regex: /^(?=\d)(?:(?:31(?!.(?:0?[2469]|11))|(?:30|29)(?!.0?2)|29(?=.0?2.(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(?:\x20|$))|(?:2[0-8]|1\d|0?[1-9]))([-.\/])(?:1[012]|0?[1-9])\1(?:1[6-9]|[2-9]\d)?\d\d(?:(?=\x20\d)\x20|$))?(((0?[1-9]|1[012])(:[0-5]\d){0,2}(\x20[AP]M))|([01]\d|2[0-3])(:[0-5]\d){1,2})?$/
                 },
-                "shopVo.id": "required"
+                "customerVo.id": "required"
             },
             messages: {
-                purchaseDate: {
+                sellDate: {
                     regex: "date is invalid"
                 }
             },
@@ -19,19 +19,19 @@ $(document).ready(
             }
         });
     	
-        $("#purchaseDate").datepicker({
+        $("#sellDate").datepicker({
             yearRange: "2002:2012",
             dateFormat: 'dd/mm/yy',
             changeMonth: true,
             changeYear: true,
         });
 
-        /*set purchase date in edit mode*/
-        var formateEditDate = moment(purchaseDate).format('DD/MM/YYYY')
-        $("#purchaseDate").val(formateEditDate);
+        /*set sell date in edit mode*/
+        var formateEditDate = moment(sellDate).format('DD/MM/YYYY')
+        $("#sellDate").val(formateEditDate);
 
-        /*select shop*/
-        $("#shopId").val(shopId)
+        /*select customer*/
+        $("#customerId").val(customerId)
 
         // accordian plus and minus button
         // Add minus icon for collapse element which is open by default
@@ -154,24 +154,24 @@ $(document).ready(
         updateAllTotalAmount();
     });
 
-/*view all purchase order detail*/
-function onView(purchaseId) {
+/*view all sell order detail*/
+function onView(sellId) {
 
-    if (purchaseId) {
-        $.get("/purchase/" + purchaseId, function(order) {
+    if (sellId) {
+        $.get("/sell/" + sellId, function(order) {
             $("#POMOrderNumber").html(order.id);
-            $("#POMOrderDate").html(moment(order.purchaseDate).format("DD/MM/YYYY"));
-            $("#POMShopName").html(order.shopVo.name);
+            $("#POMOrderDate").html(moment(order.sellDate).format("DD/MM/YYYY"));
+            $("#POMCustomerName").html(order.customerVo.name);
 
             /*prepare product body for view in table */
             var productTableBody = "";
-            if (order.purchaseItemVos) {
-                for (var purchaseItem of order.purchaseItemVos) {
+            if (order.sellItemVos) {
+                for (var sellItem of order.sellItemVos) {
                     productTableBody += "<tr>";
-                    productTableBody += "<td>" + purchaseItem?.productVo.name + "</td>";
-                    productTableBody += "<td>" + purchaseItem?.qty + "</td>";
-                    productTableBody += "<td>" + purchaseItem?.price + "</td>";
-                    productTableBody += "<td>" + purchaseItem?.totalAmount + "</td>";
+                    productTableBody += "<td>" + sellItem?.productVo.name + "</td>";
+                    productTableBody += "<td>" + sellItem?.qty + "</td>";
+                    productTableBody += "<td>" + sellItem?.price + "</td>";
+                    productTableBody += "<td>" + sellItem?.totalAmount + "</td>";
                     productTableBody += "</tr>";
                 }
             }
@@ -179,7 +179,7 @@ function onView(purchaseId) {
 
             /*prepare expense body for view in table */
             var expenseTableBody = "";
-            if (order.purchaseItemVos) {
+            if (order.sellItemVos) {
                 for (var expenseItem of order.expenseItemVos) {
                     expenseTableBody += "<tr>";
                     expenseTableBody += "<td>" + expenseItem?.expenseCategoryVo.name + "</td>";
@@ -205,22 +205,22 @@ function onView(purchaseId) {
             $("#POMUpdatedBy").html(order.updatedBy);
 
 
-            $("#purchaseOrderModal").modal("show");
+            $("#sellOrderModal").modal("show");
         })
     }
 
 }
 /*add product repeater validation dynamically*/
 function addProductValidation(index) {
-    $("select[name='purchaseItemVos[" + index + "].productVo.id']").rules('add', idValidation);
-    $("input[name='purchaseItemVos[" + index + "].price']").rules('add', priceValidation);
-    $("input[name='purchaseItemVos[" + index + "].qty']").rules('add', qtyValidation);
+    $("select[name='sellItemVos[" + index + "].productVo.id']").rules('add', idValidation);
+    $("input[name='sellItemVos[" + index + "].price']").rules('add', priceValidation);
+    $("input[name='sellItemVos[" + index + "].qty']").rules('add', qtyValidation);
 }
 /*remove product repeater validation dynamically*/
 function removeProductValidation(index) {
-    $("select[name='purchaseItemVos[" + index + "].productVo.id']").rules('remove');
-    $("input[name='purchaseItemVos[" + index + "].price']").rules('remove');
-    $("input[name='purchaseItemVos[" + index + "].qty']").rules('remove');
+    $("select[name='sellItemVos[" + index + "].productVo.id']").rules('remove');
+    $("input[name='sellItemVos[" + index + "].price']").rules('remove');
+    $("input[name='sellItemVos[" + index + "].qty']").rules('remove');
 }
 
 /*add expense repeater validation dynamically*/

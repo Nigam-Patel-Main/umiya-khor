@@ -10,7 +10,7 @@
 	</button>
 	<div class="collapse navbar-collapse" id="navbarText">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="#">Selling
+			<li class="nav-item active"><a class="nav-link" href="/sell">Selling
 
 			</a></li>
 			<li class="nav-item"><a class="nav-link" href="/purchase">Purchase</a></li>

@@ -15,10 +15,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "expense_item")
+@Table(name = "sell_item")
 @Getter
 @Setter
-public class ExpenseItemVo {
+public class SellItemVo {
 
 	@Id
 	@Column(name = "id")
@@ -26,19 +26,17 @@ public class ExpenseItemVo {
 	private long id;
 
 	@ManyToOne
-	@JoinColumn(name = "expense_category_id")
-	private ExpenseCategoryVo expenseCategoryVo;
+	@JoinColumn(name = "product_id")
+	private ProductVo productVo;
 
-	@Column(name = "description")
-	private String description;
+	@Column(name = "qty")
+	private Double qty;
 
 	@Column(name = "price")
 	private Double price;
 
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "purchase_id")
-	private PurchaseVo purchaseVo;
+	@Column(name = "total_amount")
+	private Double totalAmount;
 
 	@JsonIgnore
 	@ManyToOne

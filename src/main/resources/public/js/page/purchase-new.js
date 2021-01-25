@@ -215,15 +215,15 @@ function removeProductValidation(index){
 /*add expense repeater validation dynamically*/
 function addExpenseValidation(index){
 	$("select[name='expenseItemVos["+index+"].expenseCategoryVo.id']").rules('add',idValidation);
-	$("input[name='purchaseItemVos["+index+"].discription']").rules('add',descriptionValidation);
-	$("input[name='purchaseItemVos["+index+"].price']").rules('add',priceValidation);
+	$("input[name='expenseItemVos["+index+"].description']").rules('add',descriptionValidation);
+	$("input[name='expenseItemVos["+index+"].price']").rules('add',priceValidation);
 }
 
 /*remove expense repeater validation dynamically*/
 function removeExpenseValidation(index){
-	$("select[name='purchaseItemVos["+index+"].expenseCategoryVo.id']").rules('remove');
-	$("input[name='purchaseItemVos["+index+"].discription']").rules('remove');
-	$("input[name='purchaseItemVos["+index+"].price']").rules('remove');
+	$("select[name='expenseItemVos["+index+"].expenseCategoryVo.id']").rules('remove');
+	$("input[name='expenseItemVos["+index+"].description']").rules('remove');
+	$("input[name='expenseItemVos["+index+"].price']").rules('remove');
 }
 
 /*cleare all expense repeater on hide button*/
